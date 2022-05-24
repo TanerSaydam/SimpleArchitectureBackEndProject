@@ -19,12 +19,16 @@ namespace Business.Concrete
 
         public async void Add(RegisterAuthDto registerDto)
         {
-            string fileName = _fileService.FileSave(registerDto.Image, "./Content/Img/");
+            string fileName = _fileService.FileSaveToServer(registerDto.Image, "./Content/Img/");
+            //string fileName = _fileService.FileSaveToFtp(registerDto.Image);
+            //byte[] fileByteArray = _fileService.FileConvertByteArrayToDatabase(registerDto.Image);
 
             var user = CreateUser(registerDto, fileName);
 
             _userDal.Add(user);
         }
+
+
 
         private User CreateUser(RegisterAuthDto registerDto, string fileName)
         {

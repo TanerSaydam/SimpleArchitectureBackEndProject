@@ -4,6 +4,8 @@ namespace Business.Abstract
 {
     public interface IFileService
     {
-        string FileSave(IFormFile file, string filePath);
+        string FileSaveToServer(IFormFile file, string filePath);
+        string FileSaveToFtp(IFormFile file);
+        byte[] FileConvertByteArrayToDatabase(IFormFile file);
     }
 }

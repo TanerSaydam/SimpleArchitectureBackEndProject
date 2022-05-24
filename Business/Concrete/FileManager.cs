@@ -1,11 +1,12 @@
 ﻿using Business.Abstract;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace Business.Concrete
 {
     public class FileManager : IFileService
     {
-        public string FileSave(IFormFile file, string filePath)
+        public string FileSaveToServer(IFormFile file, string filePath)
         {
             var fileFormat = file.FileName.Substring(file.FileName.LastIndexOf('.'));
             fileFormat = fileFormat.ToLower();
@@ -16,6 +17,34 @@ namespace Business.Concrete
                 file.CopyTo(stream);
             }
             return fileName;
+        }
+
+        public string FileSaveToFtp(IFormFile file)
+        {
+            var fileFormat = file.FileName.Substring(file.FileName.LastIndexOf('.'));
+            fileFormat = fileFormat.ToLower();
+            string fileName = Guid.NewGuid().ToString() + fileFormat;
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("FTP Adresimiz yazılacak" + fileName);
+            request.Credentials = new NetworkCredential("Kullanıcı adı", "Şifre");
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+
+            using (Stream ftpStream = request.GetRequestStream())
+            {
+                file.CopyTo(ftpStream);
+            }
+
+            return fileName;
+        }
+
+        public byte[] FileConvertByteArrayToDatabase(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                var fileBytes = memoryStream.ToArray();
+                string fileString = Convert.ToBase64String(fileBytes);
+                return fileBytes;
+            }
         }
     }
 }
