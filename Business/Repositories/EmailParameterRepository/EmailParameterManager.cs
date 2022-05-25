@@ -1,4 +1,8 @@
-﻿using Business.Repositories.EmailParameterRepository.Constans;
+﻿using Business.Aspects.Secured;
+using Business.Repositories.EmailParameterRepository.Constans;
+using Business.Repositories.EmailParameterRepository.Validation.FluentValidation;
+using Core.Aspects.Caching;
+using Core.Aspects.Validation;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.EmailParameterRepository;
@@ -17,6 +21,9 @@ namespace Business.Repositories.EmailParameterRepository
             _emailParameterDal = emailParameterDal;
         }
 
+        [SecuredAspect()]
+        [ValidationAspect(typeof(EmailParameterValidator))]
+        [RemoveCacheAspect("IEmailParameterService.Get")]
         public IResult Add(EmailParameter emailParameter)
         {
             _emailParameterDal.Add(emailParameter);
@@ -24,6 +31,8 @@ namespace Business.Repositories.EmailParameterRepository
 
         }
 
+        [SecuredAspect()]
+        [RemoveCacheAspect("IEmailParameterService.Get")]
         public IResult Delete(EmailParameter emailParameter)
         {
             _emailParameterDal.Delete(emailParameter);
@@ -35,6 +44,7 @@ namespace Business.Repositories.EmailParameterRepository
             return new SuccessDataResult<EmailParameter>(_emailParameterDal.Get(p => p.Id == id));
         }
 
+        [CacheAspect()]
         public IDataResult<List<EmailParameter>> GetList()
         {
             return new SuccessDataResult<List<EmailParameter>>(_emailParameterDal.GetAll());
@@ -67,6 +77,9 @@ namespace Business.Repositories.EmailParameterRepository
 
         }
 
+        [SecuredAspect()]
+        [ValidationAspect(typeof(EmailParameterValidator))]
+        [RemoveCacheAspect("IEmailParameterService.Get")]
         public IResult Update(EmailParameter emailParameter)
         {
             _emailParameterDal.Update(emailParameter);

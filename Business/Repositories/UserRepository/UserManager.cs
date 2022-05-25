@@ -1,8 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Aspects.Secured;
 using Business.Repositories.UserRepository.Contans;
 using Business.Repositories.UserRepository.Validation.FluentValidation;
 using Core.Aspects.Caching;
-using Core.Aspects.Transaction;
+using Core.Aspects.Performance;
 using Core.Aspects.Validation;
 using Core.Utilities.Hashing;
 using Core.Utilities.Result.Abstract;
@@ -24,7 +25,7 @@ namespace Business.Repositories.UserRepository
             _fileService = fileService;
         }
 
-        [RemoveCacheAspect("IUserService.GetList")]
+        [RemoveCacheAspect("IUserService.Get")]
         public void Add(RegisterAuthDto registerDto)
         {
             string fileName = _fileService.FileSaveToServer(registerDto.Image, "./Content/Img/");
@@ -57,21 +58,26 @@ namespace Business.Repositories.UserRepository
             return result;
         }
 
+        [SecuredAspect()]
         [ValidationAspect(typeof(UserValidator))]
-        [TransactionAspect()]
+        [RemoveCacheAspect("IUserService.Get")]
         public IResult Update(User user)
         {
             _userDal.Update(user);
             return new SuccessResult(UserMessages.UpdatedUser);
         }
 
+        [SecuredAspect()]
+        [RemoveCacheAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
             return new SuccessResult(UserMessages.DeletedUser);
         }
 
+        [SecuredAspect()]
         [CacheAspect(60)]
+        [PerformanceAspect(3)]
         public IDataResult<List<User>> GetList()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
@@ -82,6 +88,7 @@ namespace Business.Repositories.UserRepository
             return new SuccessDataResult<User>(_userDal.Get(p => p.Id == id));
         }
 
+        [SecuredAspect()]
         [ValidationAspect(typeof(UserChangePasswordValidator))]
         public IResult ChangePassword(UserChangePasswordDto userChangePasswordDto)
         {

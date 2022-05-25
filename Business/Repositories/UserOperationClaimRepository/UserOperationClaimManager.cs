@@ -24,6 +24,7 @@ namespace Business.Repositories.UserOperationClaimRepository
             _userService = userService;
         }
 
+
         public IResult Delete(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Delete(userOperationClaim);

@@ -11,12 +11,16 @@ namespace Core.Aspects.Caching
         private int _duration;
         private ICacheManager _cacheManager;
 
+        public CacheAspect()
+        {
+            _duration = 60;
+            _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
+        }
         public CacheAspect(int duration)
         {
             _duration = duration;
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
-
 
         public override void Intercept(IInvocation invocation)
         {
