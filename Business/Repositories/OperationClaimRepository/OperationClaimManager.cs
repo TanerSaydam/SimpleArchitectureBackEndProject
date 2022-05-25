@@ -1,5 +1,7 @@
-﻿using Business.Repositories.OperationClaimRepository.Constans;
+﻿using Business.Aspects.Secured;
+using Business.Repositories.OperationClaimRepository.Constans;
 using Business.Repositories.OperationClaimRepository.Validation.FluentValidation;
+using Core.Aspects.Performance;
 using Core.Aspects.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Result.Abstract;
@@ -49,6 +51,8 @@ namespace Business.Repositories.OperationClaimRepository
             return new SuccessResult(OperationClaimMessages.Deleted);
         }
 
+        [SecuredAspect()]
+        [PerformanceAspect()]
         public IDataResult<List<OperationClaim>> GetList()
         {
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetAll());
