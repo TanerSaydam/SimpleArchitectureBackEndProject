@@ -12,6 +12,7 @@ namespace Business.Repositories.UserRepository
         IResult Delete(User user);
         IDataResult<List<User>> GetList();
         User GetByEmail(string email);
+        List<OperationClaim> GetUserOperationClaims(int userId);
         IDataResult<User> GetById(int id);
     }
 }

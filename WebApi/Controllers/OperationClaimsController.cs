@@ -1,5 +1,6 @@
 ﻿using Business.Repositories.OperationClaimRepository;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -49,6 +50,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getList")]
+        [Authorize(Roles = "GetList")]
         public IActionResult GetList()
         {
             var result = _operationClaimService.GetList();

@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Repositories.UserRepository.Contans;
 using Business.Repositories.UserRepository.Validation.FluentValidation;
+using Core.Aspects.Transaction;
 using Core.Aspects.Validation;
 using Core.Utilities.Hashing;
 using Core.Utilities.Result.Abstract;
@@ -55,6 +56,7 @@ namespace Business.Repositories.UserRepository
         }
 
         [ValidationAspect(typeof(UserValidator))]
+        [TransactionAspect()]
         public IResult Update(User user)
         {
             _userDal.Update(user);
@@ -94,6 +96,11 @@ namespace Business.Repositories.UserRepository
             user.PasswordSalt = paswordSalt;
             _userDal.Update(user);
             return new SuccessResult(UserMessages.PasswordChanged);
+        }
+
+        public List<OperationClaim> GetUserOperationClaims(int userId)
+        {
+            return _userDal.GetUserOperatinonClaims(userId);
         }
     }
 }

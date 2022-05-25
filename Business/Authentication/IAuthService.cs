@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Result.Abstract;
+using Core.Utilities.Security.JWT;
 using Entities.Dtos;
 
 namespace Business.Abstract
@@ -6,7 +7,6 @@ namespace Business.Abstract
     public interface IAuthService
     {
         IResult Register(RegisterAuthDto registerDto);
-        string Login(LoginAuthDto loginDto);
-
+        IDataResult<Token> Login(LoginAuthDto loginDto);
     }
 }

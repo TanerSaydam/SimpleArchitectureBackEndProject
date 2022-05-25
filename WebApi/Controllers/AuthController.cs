@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Security.JWT;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ITokenHandler _tokenHadler;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ITokenHandler tokenHadler)
         {
             _authService = authService;
+            _tokenHadler = tokenHadler;
         }
 
         [HttpPost("register")]
@@ -30,7 +33,11 @@ namespace WebApi.Controllers
         public IActionResult Login(LoginAuthDto authDto)
         {
             var result = _authService.Login(authDto);
-            return Ok(result);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
         }
     }
 }
