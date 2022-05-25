@@ -1,4 +1,4 @@
-using DataAccess.Concrete.EntityFramework.Context;
+using DataAccess.Context.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
