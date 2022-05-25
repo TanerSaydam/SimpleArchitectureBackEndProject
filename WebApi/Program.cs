@@ -65,6 +65,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ConfigureCustomExcepitonMiddleware();
+
 app.UseCors("AllowOrigin");
 
 app.UseHttpsRedirection();

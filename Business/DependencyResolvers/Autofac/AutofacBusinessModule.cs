@@ -2,11 +2,13 @@
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Authentication;
+using Business.Repositories.EmailParameterRepository;
 using Business.Repositories.OperationClaimRepository;
 using Business.Repositories.UserOperationClaimRepository;
 using Business.Repositories.UserRepository;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
+using DataAccess.Repositories.EmailParameterRepository;
 using DataAccess.Repositories.OperationClaimRepository;
 using DataAccess.Repositories.UserOperationClaimRepository;
 using DataAccess.Repositories.UserRepository;
@@ -25,6 +27,9 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
+
+            builder.RegisterType<EmailParameterManager>().As<IEmailParameterService>();
+            builder.RegisterType<EfEmailParameterDal>().As<IEmailParameterDal>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
 
