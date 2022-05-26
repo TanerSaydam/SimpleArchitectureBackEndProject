@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Business.Repositories.EmailParameterRepository.Validation.FluentValidation
 {
-    internal class EmailParameterValidator : AbstractValidator<EmailParameter>
+    internal class EPValidator : AbstractValidator<EmailParameter>
     {
-        public EmailParameterValidator()
+        public EPValidator()
         {
             RuleFor(p => p.Smtp).NotEmpty().WithMessage("SMTP adresi boş olamaz");
             RuleFor(p => p.Email).NotEmpty().WithMessage("Mail adresi boş olamaz");

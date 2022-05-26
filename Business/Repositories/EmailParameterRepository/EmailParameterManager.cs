@@ -22,7 +22,7 @@ namespace Business.Repositories.EmailParameterRepository
         }
 
         [SecuredAspect()]
-        [ValidationAspect(typeof(EmailParameterValidator))]
+        [ValidationAspect(typeof(EPValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public IResult Add(EmailParameter emailParameter)
         {
@@ -78,7 +78,7 @@ namespace Business.Repositories.EmailParameterRepository
         }
 
         [SecuredAspect()]
-        [ValidationAspect(typeof(EmailParameterValidator))]
+        [ValidationAspect(typeof(EPValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public IResult Update(EmailParameter emailParameter)
         {

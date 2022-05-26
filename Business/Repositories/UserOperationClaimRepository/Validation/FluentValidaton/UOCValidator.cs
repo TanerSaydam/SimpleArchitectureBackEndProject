@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Business.Repositories.UserOperationClaimRepository.Validation.FluentValidaton
 {
-    public class UserOperationClaimValidator : AbstractValidator<UserOperationClaim>
+    public class UOCValidator : AbstractValidator<UserOperationClaim>
     {
-        public UserOperationClaimValidator()
+        public UOCValidator()
         {
             RuleFor(p => p.UserId).Must(IsIdValid).WithMessage("Yetki ataması için kullanıcı seçimi yapmalısınız");
             RuleFor(p => p.OperationClaimId).Must(IsIdValid).WithMessage("Yetki ataması için yetki seçimi yapmalısınız");

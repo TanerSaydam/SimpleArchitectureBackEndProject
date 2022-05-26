@@ -41,7 +41,7 @@ namespace Business.Repositories.UserOperationClaimRepository
             return new SuccessDataResult<List<UserOperationClaim>>(_userOperationClaimDal.GetAll());
         }
 
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [ValidationAspect(typeof(UOCValidator))]
         public IResult Update(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRules.Run(
@@ -58,7 +58,7 @@ namespace Business.Repositories.UserOperationClaimRepository
             return new SuccessResult(UserOperationClaimMessages.Updated);
         }
 
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [ValidationAspect(typeof(UOCValidator))]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRules.Run(
