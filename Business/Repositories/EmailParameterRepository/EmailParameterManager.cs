@@ -70,7 +70,7 @@ namespace Business.Repositories.EmailParameterRepository
                     smtp.Credentials = new NetworkCredential(emailParameter.Email, emailParameter.Password);
                     smtp.EnableSsl = emailParameter.SSL;
                     smtp.Port = emailParameter.Port;
-                    smtp.Send(mail);
+                    await smtp.SendMailAsync(mail);
                 }
             }
             return new SuccessResult(EmailParameterMessages.EmailSendSuccesiful);
