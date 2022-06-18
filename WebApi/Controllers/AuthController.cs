@@ -18,7 +18,7 @@ namespace WebApi.Controllers
             _tokenHadler = tokenHadler;
         }
 
-        [HttpPost("register")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromForm] RegisterAuthDto authDto)
         {
             var result = await _authService.Register(authDto);
@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("login")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginAuthDto authDto)
         {
             var result = await _authService.Login(authDto);

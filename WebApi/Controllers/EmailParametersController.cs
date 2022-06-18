@@ -15,7 +15,7 @@ namespace WebApi.Controllers
             _emailParameterService = emailParameterService;
         }
 
-        [HttpPost("add")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Add(EmailParameter emailParameter)
         {
             var result = await _emailParameterService.Add(emailParameter);
@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("update")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(EmailParameter emailParameter)
         {
             var result = await _emailParameterService.Update(emailParameter);
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("delete")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete(EmailParameter emailParameter)
         {
             var result = await _emailParameterService.Delete(emailParameter);
@@ -48,7 +48,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("getList")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetList()
         {
             var result = await _emailParameterService.GetList();
@@ -59,7 +59,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _emailParameterService.GetById(id);

@@ -16,7 +16,7 @@ namespace WebApi.Controllers
             _userService = userService;
         }
 
-        [HttpGet("getList")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetList()
         {
             var result = await _userService.GetList();
@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _userService.GetById(id);
@@ -39,7 +39,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("update")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(User user)
         {
             var result = await _userService.Update(user);
@@ -50,7 +50,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("delete")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete(User user)
         {
             var result = await _userService.Delete(user);
@@ -61,7 +61,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("changePassword")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> ChangePassword(UserChangePasswordDto userChangePasswordDto)
         {
             var result = await _userService.ChangePassword(userChangePasswordDto);

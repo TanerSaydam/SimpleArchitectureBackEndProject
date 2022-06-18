@@ -15,7 +15,7 @@ namespace WebApi.Controllers
             _userOperationClaimService = userOperationClaimService;
         }
 
-        [HttpPost("add")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Add(UserOperationClaim userOperationClaim)
         {
             var result = await _userOperationClaimService.Add(userOperationClaim);
@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("update")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Update(UserOperationClaim userOperationClaim)
         {
             var result = await _userOperationClaimService.Update(userOperationClaim);
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("delete")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete(UserOperationClaim userOperationClaim)
         {
             var result = await _userOperationClaimService.Delete(userOperationClaim);
@@ -48,7 +48,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("getList")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetList()
         {
             var result = await _userOperationClaimService.GetList();
@@ -59,7 +59,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _userOperationClaimService.GetById(id);
