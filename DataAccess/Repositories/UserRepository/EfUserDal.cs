@@ -1,12 +1,13 @@
 ﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Context.EntityFramework;
 using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories.UserRepository
 {
     public class EfUserDal : EfEntityRepositoryBase<User, SimpleContextDb>, IUserDal
     {
-        public List<OperationClaim> GetUserOperatinonClaims(int userId)
+        public async Task<List<OperationClaim>> GetUserOperatinonClaims(int userId)
         {
             using (var context = new SimpleContextDb())
             {
@@ -17,7 +18,7 @@ namespace DataAccess.Repositories.UserRepository
                                  Id = operationClaim.Id,
                                  Name = operationClaim.Name
                              };
-                return result.OrderBy(p => p.Name).ToList();
+                return await result.OrderBy(p => p.Name).ToListAsync();
             }
         }
     }

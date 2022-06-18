@@ -1,6 +1,6 @@
 ﻿using Business.Repositories.OperationClaimRepository;
 using Business.Repositories.UserOperationClaimRepository.Constans;
-using Business.Repositories.UserOperationClaimRepository.Validation.FluentValidaton;
+using Business.Repositories.UserOperationClaimRepository.Validation;
 using Business.Repositories.UserRepository;
 using Core.Aspects.Validation;
 using Core.Utilities.Business;
@@ -25,59 +25,59 @@ namespace Business.Repositories.UserOperationClaimRepository
         }
 
 
-        public IResult Delete(UserOperationClaim userOperationClaim)
+        public async Task<IResult> Delete(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult(UserOperationClaimMessages.Deleted);
         }
 
-        public IDataResult<UserOperationClaim> GetById(int id)
+        public async Task<IDataResult<UserOperationClaim>> GetById(int id)
         {
-            return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(p => p.Id == id));
+            return new SuccessDataResult<UserOperationClaim>(await _userOperationClaimDal.Get(p => p.Id == id));
         }
 
-        public IDataResult<List<UserOperationClaim>> GetList()
+        public async Task<IDataResult<List<UserOperationClaim>>> GetList()
         {
-            return new SuccessDataResult<List<UserOperationClaim>>(_userOperationClaimDal.GetAll());
+            return new SuccessDataResult<List<UserOperationClaim>>(await _userOperationClaimDal.GetAll());
         }
 
-        [ValidationAspect(typeof(UOCValidator))]
-        public IResult Update(UserOperationClaim userOperationClaim)
+        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        public async Task<IResult> Update(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRules.Run(
-                IsUserExist(userOperationClaim.UserId),
-                IsOperationClaimExist(userOperationClaim.OperationClaimId),
-                IsOperationSetExistForUpdate(userOperationClaim)
+                await IsUserExist(userOperationClaim.UserId),
+                await IsOperationClaimExist(userOperationClaim.OperationClaimId),
+                await IsOperationSetExistForUpdate(userOperationClaim)
                 );
             if (result != null)
             {
                 return result;
             }
 
-            _userOperationClaimDal.Update(userOperationClaim);
+            await _userOperationClaimDal.Update(userOperationClaim);
             return new SuccessResult(UserOperationClaimMessages.Updated);
         }
 
-        [ValidationAspect(typeof(UOCValidator))]
-        public IResult Add(UserOperationClaim userOperationClaim)
+        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        public async Task<IResult> Add(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRules.Run(
-                IsUserExist(userOperationClaim.UserId),
-                IsOperationClaimExist(userOperationClaim.OperationClaimId),
-                IsOperationSetExistForAdd(userOperationClaim)
+                await IsUserExist(userOperationClaim.UserId),
+                await IsOperationClaimExist(userOperationClaim.OperationClaimId),
+                await IsOperationSetExistForAdd(userOperationClaim)
                 );
             if (result != null)
             {
                 return result;
             }
 
-            _userOperationClaimDal.Add(userOperationClaim);
+            await _userOperationClaimDal.Add(userOperationClaim);
             return new SuccessResult(UserOperationClaimMessages.Added);
         }
 
-        public IResult IsUserExist(int userId)
+        public async Task<IResult> IsUserExist(int userId)
         {
-            var result = _userService.GetById(userId).Data;
+            var result = await _userService.GetByIdForAuth(userId);
             if (result == null)
             {
                 return new ErrorResult(UserOperationClaimMessages.UserNotExist);
@@ -85,9 +85,9 @@ namespace Business.Repositories.UserOperationClaimRepository
             return new SuccessResult();
         }
 
-        public IResult IsOperationClaimExist(int operationClaimId)
+        public async Task<IResult> IsOperationClaimExist(int operationClaimId)
         {
-            var result = _operationClaimService.GetById(operationClaimId).Data;
+            var result = await _operationClaimService.GetByIdForUserService(operationClaimId);
             if (result == null)
             {
                 return new ErrorResult(UserOperationClaimMessages.OperationClaimNotExist);
@@ -95,9 +95,9 @@ namespace Business.Repositories.UserOperationClaimRepository
             return new SuccessResult();
         }
 
-        public IResult IsOperationSetExistForAdd(UserOperationClaim userOperationClaim)
+        public async Task<IResult> IsOperationSetExistForAdd(UserOperationClaim userOperationClaim)
         {
-            var result = _userOperationClaimDal.Get(p => p.UserId == userOperationClaim.UserId && p.OperationClaimId == userOperationClaim.OperationClaimId);
+            var result = await _userOperationClaimDal.Get(p => p.UserId == userOperationClaim.UserId && p.OperationClaimId == userOperationClaim.OperationClaimId);
             if (result != null)
             {
                 return new ErrorResult(UserOperationClaimMessages.OperationClaimSetExist);
@@ -105,12 +105,12 @@ namespace Business.Repositories.UserOperationClaimRepository
             return new SuccessResult();
         }
 
-        private IResult IsOperationSetExistForUpdate(UserOperationClaim userOperationClaim)
+        private async Task<IResult> IsOperationSetExistForUpdate(UserOperationClaim userOperationClaim)
         {
-            var currentUserOperationClaim = _userOperationClaimDal.Get(p => p.Id == userOperationClaim.Id);
+            var currentUserOperationClaim = await _userOperationClaimDal.Get(p => p.Id == userOperationClaim.Id);
             if (currentUserOperationClaim.UserId != userOperationClaim.UserId || currentUserOperationClaim.OperationClaimId != userOperationClaim.OperationClaimId)
             {
-                var result = _userOperationClaimDal.Get(p => p.UserId == userOperationClaim.UserId && p.OperationClaimId == userOperationClaim.OperationClaimId);
+                var result = await _userOperationClaimDal.Get(p => p.UserId == userOperationClaim.UserId && p.OperationClaimId == userOperationClaim.OperationClaimId);
                 if (result != null)
                 {
                     return new ErrorResult(UserOperationClaimMessages.OperationClaimSetExist);

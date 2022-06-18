@@ -1,7 +1,7 @@
 ﻿using Entities.Dtos;
 using FluentValidation;
 
-namespace Business.Repositories.UserRepository.Validation.FluentValidation
+namespace Business.Repositories.UserRepository.Validation
 {
     public class UserChangePasswordValidator : AbstractValidator<UserChangePasswordDto>
     {

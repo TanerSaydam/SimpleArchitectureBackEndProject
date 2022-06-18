@@ -1,6 +1,6 @@
 ﻿using Business.Aspects.Secured;
 using Business.Repositories.OperationClaimRepository.Constans;
-using Business.Repositories.OperationClaimRepository.Validation.FluentValidation;
+using Business.Repositories.OperationClaimRepository.Validation;
 using Core.Aspects.Caching;
 using Core.Aspects.Performance;
 using Core.Aspects.Validation;
@@ -23,56 +23,63 @@ namespace Business.Repositories.OperationClaimRepository
         [SecuredAspect()]
         [ValidationAspect(typeof(OperationClaimValidator))]
         [RemoveCacheAspect("IOperationClaimService.Get")]
-        public IResult Add(OperationClaim operationClaim)
+        public async Task<IResult> Add(OperationClaim operationClaim)
         {
-            IResult result = BusinessRules.Run(IsNameExistForAdd(operationClaim.Name));
+            IResult result = BusinessRules.Run(await IsNameExistForAdd(operationClaim.Name));
             if (result != null)
             {
                 return result;
             }
 
-            _operationClaimDal.Add(operationClaim);
+            await _operationClaimDal.Add(operationClaim);
             return new SuccessResult(OperationClaimMessages.Added);
         }
 
         [SecuredAspect()]
         [ValidationAspect(typeof(OperationClaimValidator))]
         [RemoveCacheAspect("IOperationClaimService.Get")]
-        public IResult Update(OperationClaim operationClaim)
+        public async Task<IResult> Update(OperationClaim operationClaim)
         {
-            IResult result = BusinessRules.Run(IsNameExistForUpdate(operationClaim));
+            IResult result = BusinessRules.Run(await IsNameExistForUpdate(operationClaim));
             if (result != null)
             {
                 return result;
             }
 
-            _operationClaimDal.Update(operationClaim);
+            await _operationClaimDal.Update(operationClaim);
             return new SuccessResult(OperationClaimMessages.Updated);
         }
 
         [SecuredAspect()]
         [RemoveCacheAspect("IOperationClaimService.Get")]
-        public IResult Delete(OperationClaim operationClaim)
+        public async Task<IResult> Delete(OperationClaim operationClaim)
         {
-            _operationClaimDal.Delete(operationClaim);
+            await _operationClaimDal.Delete(operationClaim);
             return new SuccessResult(OperationClaimMessages.Deleted);
         }
 
         [CacheAspect()]
         [PerformanceAspect()]
-        public IDataResult<List<OperationClaim>> GetList()
+        public async Task<IDataResult<List<OperationClaim>>> GetList()
         {
-            return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetAll());
+            return new SuccessDataResult<List<OperationClaim>>(await _operationClaimDal.GetAll());
         }
 
-        public IDataResult<OperationClaim> GetById(int id)
+        public async Task<IDataResult<OperationClaim>> GetById(int id)
         {
-            return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(p => p.Id == id));
+            var result = await _operationClaimDal.Get(p => p.Id == id);
+            return new SuccessDataResult<OperationClaim>(result);
         }
 
-        private IResult IsNameExistForAdd(string name)
+        public async Task<OperationClaim> GetByIdForUserService(int id)
         {
-            var result = _operationClaimDal.Get(p => p.Name == name);
+            var result = await _operationClaimDal.Get(p => p.Id == id);
+            return result;
+        }
+
+        private async Task<IResult> IsNameExistForAdd(string name)
+        {
+            var result = await _operationClaimDal.Get(p => p.Name == name);
             if (result != null)
             {
                 return new ErrorResult(OperationClaimMessages.NameIsNotAvaible);
@@ -80,12 +87,12 @@ namespace Business.Repositories.OperationClaimRepository
             return new SuccessResult();
         }
 
-        private IResult IsNameExistForUpdate(OperationClaim operationClaim)
+        private async Task<IResult> IsNameExistForUpdate(OperationClaim operationClaim)
         {
-            var currentOperationClaim = _operationClaimDal.Get(p => p.Id == operationClaim.Id);
+            var currentOperationClaim = await _operationClaimDal.Get(p => p.Id == operationClaim.Id);
             if (currentOperationClaim.Name != operationClaim.Name)
             {
-                var result = _operationClaimDal.Get(p => p.Name == operationClaim.Name);
+                var result = await _operationClaimDal.Get(p => p.Name == operationClaim.Name);
                 if (result != null)
                 {
                     return new ErrorResult(OperationClaimMessages.NameIsNotAvaible);

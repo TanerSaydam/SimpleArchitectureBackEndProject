@@ -1,7 +1,7 @@
 ﻿using Entities.Concrete;
 using FluentValidation;
 
-namespace Business.Repositories.OperationClaimRepository.Validation.FluentValidation
+namespace Business.Repositories.OperationClaimRepository.Validation
 {
     public class OperationClaimValidator : AbstractValidator<OperationClaim>
     {

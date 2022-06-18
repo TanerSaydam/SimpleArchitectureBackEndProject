@@ -1,6 +1,6 @@
 ﻿using Business.Aspects.Secured;
 using Business.Repositories.EmailParameterRepository.Constans;
-using Business.Repositories.EmailParameterRepository.Validation.FluentValidation;
+using Business.Repositories.EmailParameterRepository.Validation;
 using Core.Aspects.Caching;
 using Core.Aspects.Validation;
 using Core.Utilities.Result.Abstract;
@@ -22,35 +22,35 @@ namespace Business.Repositories.EmailParameterRepository
         }
 
         [SecuredAspect()]
-        [ValidationAspect(typeof(EPValidator))]
+        [ValidationAspect(typeof(EmailParameterValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
-        public IResult Add(EmailParameter emailParameter)
+        public async Task<IResult> Add(EmailParameter emailParameter)
         {
-            _emailParameterDal.Add(emailParameter);
+            await _emailParameterDal.Add(emailParameter);
             return new SuccessResult(EmailParameterMessages.AddedEmailParameter);
 
         }
 
         [SecuredAspect()]
         [RemoveCacheAspect("IEmailParameterService.Get")]
-        public IResult Delete(EmailParameter emailParameter)
+        public async Task<IResult> Delete(EmailParameter emailParameter)
         {
-            _emailParameterDal.Delete(emailParameter);
+            await _emailParameterDal.Delete(emailParameter);
             return new SuccessResult(EmailParameterMessages.DeletedEmailParameter);
         }
 
-        public IDataResult<EmailParameter> GetById(int id)
+        public async Task<IDataResult<EmailParameter>> GetById(int id)
         {
-            return new SuccessDataResult<EmailParameter>(_emailParameterDal.Get(p => p.Id == id));
+            return new SuccessDataResult<EmailParameter>(await _emailParameterDal.Get(p => p.Id == id));
         }
 
         [CacheAspect()]
-        public IDataResult<List<EmailParameter>> GetList()
+        public async Task<IDataResult<List<EmailParameter>>> GetList()
         {
-            return new SuccessDataResult<List<EmailParameter>>(_emailParameterDal.GetAll());
+            return new SuccessDataResult<List<EmailParameter>>(await _emailParameterDal.GetAll());
         }
 
-        public IResult SendEmail(EmailParameter emailParameter, string body, string subject, string emails)
+        public async Task<IResult> SendEmail(EmailParameter emailParameter, string body, string subject, string emails)
         {
             using (MailMessage mail = new MailMessage())
             {
@@ -78,11 +78,11 @@ namespace Business.Repositories.EmailParameterRepository
         }
 
         [SecuredAspect()]
-        [ValidationAspect(typeof(EPValidator))]
+        [ValidationAspect(typeof(EmailParameterValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
-        public IResult Update(EmailParameter emailParameter)
+        public async Task<IResult> Update(EmailParameter emailParameter)
         {
-            _emailParameterDal.Update(emailParameter);
+            await _emailParameterDal.Update(emailParameter);
             return new SuccessResult(EmailParameterMessages.UpdatedEmailParameter);
         }
     }

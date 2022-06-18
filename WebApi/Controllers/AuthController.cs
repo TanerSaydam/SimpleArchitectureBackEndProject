@@ -19,9 +19,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromForm] RegisterAuthDto authDto)
+        public async Task<IActionResult> Register([FromForm] RegisterAuthDto authDto)
         {
-            var result = _authService.Register(authDto);
+            var result = await _authService.Register(authDto);
             if (result.Success)
             {
                 return Ok(result);
@@ -30,9 +30,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LoginAuthDto authDto)
+        public async Task<IActionResult> Login(LoginAuthDto authDto)
         {
-            var result = _authService.Login(authDto);
+            var result = await _authService.Login(authDto);
             if (result.Success)
             {
                 return Ok(result);

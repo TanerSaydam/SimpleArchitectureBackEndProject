@@ -6,13 +6,14 @@ namespace Business.Repositories.UserRepository
 {
     public interface IUserService
     {
-        void Add(RegisterAuthDto authDto);
-        IResult Update(User user);
-        IResult ChangePassword(UserChangePasswordDto userChangePasswordDto);
-        IResult Delete(User user);
-        IDataResult<List<User>> GetList();
-        User GetByEmail(string email);
-        List<OperationClaim> GetUserOperationClaims(int userId);
-        IDataResult<User> GetById(int id);
+        Task Add(RegisterAuthDto authDto);
+        Task<IResult> Update(User user);
+        Task<IResult> ChangePassword(UserChangePasswordDto userChangePasswordDto);
+        Task<IResult> Delete(User user);
+        Task<IDataResult<List<User>>> GetList();
+        Task<User> GetByEmail(string email);
+        Task<List<OperationClaim>> GetUserOperationClaims(int userId);
+        Task<IDataResult<User>> GetById(int id);
+        Task<User> GetByIdForAuth(int id);
     }
 }

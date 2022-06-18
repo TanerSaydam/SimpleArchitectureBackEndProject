@@ -17,9 +17,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getList")]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            var result = _userService.GetList();
+            var result = await _userService.GetList();
             if (result.Success)
             {
                 return Ok(result);
@@ -29,9 +29,9 @@ namespace WebApi.Controllers
 
 
         [HttpGet("getById")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _userService.GetById(id);
+            var result = await _userService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +40,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(User user)
+        public async Task<IActionResult> Update(User user)
         {
-            var result = _userService.Update(user);
+            var result = await _userService.Update(user);
             if (result.Success)
             {
                 return Ok(result);
@@ -51,9 +51,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(User user)
+        public async Task<IActionResult> Delete(User user)
         {
-            var result = _userService.Delete(user);
+            var result = await _userService.Delete(user);
             if (result.Success)
             {
                 return Ok(result);
@@ -62,9 +62,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("changePassword")]
-        public IActionResult ChangePassword(UserChangePasswordDto userChangePasswordDto)
+        public async Task<IActionResult> ChangePassword(UserChangePasswordDto userChangePasswordDto)
         {
-            var result = _userService.ChangePassword(userChangePasswordDto);
+            var result = await _userService.ChangePassword(userChangePasswordDto);
             if (result.Success)
             {
                 return Ok(result);

@@ -1,7 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Aspects.Secured;
 using Business.Repositories.UserRepository.Contans;
-using Business.Repositories.UserRepository.Validation.FluentValidation;
+using Business.Repositories.UserRepository.Validation;
 using Core.Aspects.Caching;
 using Core.Aspects.Performance;
 using Core.Aspects.Validation;
@@ -26,7 +26,7 @@ namespace Business.Repositories.UserRepository
         }
 
         [RemoveCacheAspect("IUserService.Get")]
-        public void Add(RegisterAuthDto registerDto)
+        public async Task Add(RegisterAuthDto registerDto)
         {
             string fileName = _fileService.FileSaveToServer(registerDto.Image, "./Content/Img/");
             //string fileName = _fileService.FileSaveToFtp(registerDto.Image);
@@ -34,7 +34,7 @@ namespace Business.Repositories.UserRepository
 
             var user = CreateUser(registerDto, fileName);
 
-            _userDal.Add(user);
+            await _userDal.Add(user);
         }
 
         private User CreateUser(RegisterAuthDto registerDto, string fileName)
@@ -52,47 +52,52 @@ namespace Business.Repositories.UserRepository
             return user;
         }
 
-        public User GetByEmail(string email)
+        public async Task<User> GetByEmail(string email)
         {
-            var result = _userDal.Get(p => p.Email == email);
+            var result = await _userDal.Get(p => p.Email == email);
             return result;
         }
 
         [SecuredAspect()]
         [ValidationAspect(typeof(UserValidator))]
         [RemoveCacheAspect("IUserService.Get")]
-        public IResult Update(User user)
+        public async Task<IResult> Update(User user)
         {
-            _userDal.Update(user);
+            await _userDal.Update(user);
             return new SuccessResult(UserMessages.UpdatedUser);
         }
 
         [SecuredAspect()]
         [RemoveCacheAspect("IUserService.Get")]
-        public IResult Delete(User user)
+        public async Task<IResult> Delete(User user)
         {
-            _userDal.Delete(user);
+            await _userDal.Delete(user);
             return new SuccessResult(UserMessages.DeletedUser);
         }
 
         [SecuredAspect()]
         [CacheAspect(60)]
         [PerformanceAspect(3)]
-        public IDataResult<List<User>> GetList()
+        public async Task<IDataResult<List<User>>> GetList()
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll());
+            return new SuccessDataResult<List<User>>(await _userDal.GetAll());
         }
 
-        public IDataResult<User> GetById(int id)
+        public async Task<IDataResult<User>> GetById(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(p => p.Id == id));
+            return new SuccessDataResult<User>(await _userDal.Get(p => p.Id == id));
+        }
+
+        public async Task<User> GetByIdForAuth(int id)
+        {
+            return await _userDal.Get(p => p.Id == id);
         }
 
         [SecuredAspect()]
         [ValidationAspect(typeof(UserChangePasswordValidator))]
-        public IResult ChangePassword(UserChangePasswordDto userChangePasswordDto)
+        public async Task<IResult> ChangePassword(UserChangePasswordDto userChangePasswordDto)
         {
-            var user = _userDal.Get(p => p.Id == userChangePasswordDto.UserId);
+            var user = await _userDal.Get(p => p.Id == userChangePasswordDto.UserId);
             bool result = HashingHelper.VerifyPasswordHash(userChangePasswordDto.CurrentPassword, user.PasswordHash, user.PasswordSalt);
             if (!result)
             {
@@ -104,13 +109,13 @@ namespace Business.Repositories.UserRepository
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = paswordSalt;
-            _userDal.Update(user);
+            await _userDal.Update(user);
             return new SuccessResult(UserMessages.PasswordChanged);
         }
 
-        public List<OperationClaim> GetUserOperationClaims(int userId)
+        public async Task<List<OperationClaim>> GetUserOperationClaims(int userId)
         {
-            return _userDal.GetUserOperatinonClaims(userId);
+            return await _userDal.GetUserOperatinonClaims(userId);
         }
     }
 }

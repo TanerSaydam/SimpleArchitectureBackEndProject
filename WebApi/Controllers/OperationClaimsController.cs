@@ -16,9 +16,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(OperationClaim operationClaim)
+        public async Task<IActionResult> Add(OperationClaim operationClaim)
         {
-            var result = _operationClaimService.Add(operationClaim);
+            var result = await _operationClaimService.Add(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -27,9 +27,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(OperationClaim operationClaim)
+        public async Task<IActionResult> Update(OperationClaim operationClaim)
         {
-            var result = _operationClaimService.Update(operationClaim);
+            var result = await _operationClaimService.Update(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,9 +38,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(OperationClaim operationClaim)
+        public async Task<IActionResult> Delete(OperationClaim operationClaim)
         {
-            var result = _operationClaimService.Delete(operationClaim);
+            var result = await _operationClaimService.Delete(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebApi.Controllers
 
         [HttpGet("getList")]
         //[Authorize(Roles = "GetList")]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            var result = _operationClaimService.GetList();
+            var result = await _operationClaimService.GetList();
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _operationClaimService.GetById(id);
+            var result = await _operationClaimService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

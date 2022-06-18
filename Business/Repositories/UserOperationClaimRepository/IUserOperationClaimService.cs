@@ -5,10 +5,10 @@ namespace Business.Repositories.UserOperationClaimRepository
 {
     public interface IUserOperationClaimService
     {
-        IResult Add(UserOperationClaim userOperationClaim);
-        IResult Update(UserOperationClaim userOperationClaim);
-        IResult Delete(UserOperationClaim userOperationClaim);
-        IDataResult<List<UserOperationClaim>> GetList();
-        IDataResult<UserOperationClaim> GetById(int id);
+        Task<IResult> Add(UserOperationClaim userOperationClaim);
+        Task<IResult> Update(UserOperationClaim userOperationClaim);
+        Task<IResult> Delete(UserOperationClaim userOperationClaim);
+        Task<IDataResult<List<UserOperationClaim>>> GetList();
+        Task<IDataResult<UserOperationClaim>> GetById(int id);
     }
 }

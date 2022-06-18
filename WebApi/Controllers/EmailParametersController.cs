@@ -16,9 +16,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(EmailParameter emailParameter)
+        public async Task<IActionResult> Add(EmailParameter emailParameter)
         {
-            var result = _emailParameterService.Add(emailParameter);
+            var result = await _emailParameterService.Add(emailParameter);
             if (result.Success)
             {
                 return Ok(result);
@@ -27,9 +27,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(EmailParameter emailParameter)
+        public async Task<IActionResult> Update(EmailParameter emailParameter)
         {
-            var result = _emailParameterService.Update(emailParameter);
+            var result = await _emailParameterService.Update(emailParameter);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,9 +38,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(EmailParameter emailParameter)
+        public async Task<IActionResult> Delete(EmailParameter emailParameter)
         {
-            var result = _emailParameterService.Delete(emailParameter);
+            var result = await _emailParameterService.Delete(emailParameter);
             if (result.Success)
             {
                 return Ok(result);
@@ -49,9 +49,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getList")]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            var result = _emailParameterService.GetList();
+            var result = await _emailParameterService.GetList();
             if (result.Success)
             {
                 return Ok(result);
@@ -60,9 +60,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _emailParameterService.GetById(id);
+            var result = await _emailParameterService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

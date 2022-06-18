@@ -23,11 +23,11 @@ namespace Business.Authentication
             _tokenHandler = tokenHandler;
         }
 
-        public IDataResult<Token> Login(LoginAuthDto loginDto)
+        public async Task<IDataResult<Token>> Login(LoginAuthDto loginDto)
         {
-            var user = _userService.GetByEmail(loginDto.Email);
+            var user = await _userService.GetByEmail(loginDto.Email);
             var result = HashingHelper.VerifyPasswordHash(loginDto.Password, user.PasswordHash, user.PasswordSalt);
-            List<OperationClaim> operationClaims = _userService.GetUserOperationClaims(user.Id);
+            List<OperationClaim> operationClaims = await _userService.GetUserOperationClaims(user.Id);
             if (result)
             {
                 Token token = new Token();
@@ -38,10 +38,10 @@ namespace Business.Authentication
         }
 
         [ValidationAspect(typeof(AuthValidator))]
-        public IResult Register(RegisterAuthDto registerDto)
+        public async Task<IResult> Register(RegisterAuthDto registerDto)
         {
             IResult result = BusinessRules.Run(
-                CheckIfEmailExists(registerDto.Email),
+                await CheckIfEmailExists(registerDto.Email),
                 CheckIfImageExtesionsAllow(registerDto.Image.FileName),
                 CheckIfImageSizeIsLessThanOneMb(registerDto.Image.Length)
                 );
@@ -51,13 +51,13 @@ namespace Business.Authentication
                 return result;
             }
 
-            _userService.Add(registerDto);
+            await _userService.Add(registerDto);
             return new SuccessResult("Kullanıcı kaydı başarıyla tamamlandı");
         }
 
-        private IResult CheckIfEmailExists(string email)
+        private async Task<IResult> CheckIfEmailExists(string email)
         {
-            var list = _userService.GetByEmail(email);
+            var list = await _userService.GetByEmail(email);
             if (list != null)
             {
                 return new ErrorResult("Bu mail adresi daha önce kullanılmış");

@@ -16,9 +16,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(UserOperationClaim userOperationClaim)
+        public async Task<IActionResult> Add(UserOperationClaim userOperationClaim)
         {
-            var result = _userOperationClaimService.Add(userOperationClaim);
+            var result = await _userOperationClaimService.Add(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -27,9 +27,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(UserOperationClaim userOperationClaim)
+        public async Task<IActionResult> Update(UserOperationClaim userOperationClaim)
         {
-            var result = _userOperationClaimService.Update(userOperationClaim);
+            var result = await _userOperationClaimService.Update(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,9 +38,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(UserOperationClaim userOperationClaim)
+        public async Task<IActionResult> Delete(UserOperationClaim userOperationClaim)
         {
-            var result = _userOperationClaimService.Delete(userOperationClaim);
+            var result = await _userOperationClaimService.Delete(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -49,9 +49,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getList")]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            var result = _userOperationClaimService.GetList();
+            var result = await _userOperationClaimService.GetList();
             if (result.Success)
             {
                 return Ok(result);
@@ -60,9 +60,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _userOperationClaimService.GetById(id);
+            var result = await _userOperationClaimService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);

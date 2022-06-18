@@ -1,7 +1,7 @@
 ﻿using Entities.Concrete;
 using FluentValidation;
 
-namespace Business.Repositories.UserRepository.Validation.FluentValidation
+namespace Business.Repositories.UserRepository.Validation
 {
     public class UserValidator : AbstractValidator<User>
     {
