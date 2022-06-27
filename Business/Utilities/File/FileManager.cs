@@ -46,5 +46,33 @@ namespace Business.Concrete
                 return fileBytes;
             }
         }
+
+        public void FileDeleteToServer(string path)
+        {
+            try
+            {
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public void FileDeleteToFtp(string path)
+        {
+            try
+            {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp adresi" + path);
+                request.Credentials = new NetworkCredential("kullanıcı adı", "şifre");
+                request.Method = WebRequestMethods.Ftp.DeleteFile;
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }
