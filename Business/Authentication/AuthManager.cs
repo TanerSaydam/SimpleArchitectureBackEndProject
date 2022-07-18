@@ -26,6 +26,9 @@ namespace Business.Authentication
         public async Task<IDataResult<Token>> Login(LoginAuthDto loginDto)
         {
             var user = await _userService.GetByEmail(loginDto.Email);
+            if (user == null)
+                return new ErrorDataResult<Token>("Kullanıcı maili sistemde bulunamadı!");
+
             var result = HashingHelper.VerifyPasswordHash(loginDto.Password, user.PasswordHash, user.PasswordSalt);
             List<OperationClaim> operationClaims = await _userService.GetUserOperationClaims(user.Id);
             if (result)

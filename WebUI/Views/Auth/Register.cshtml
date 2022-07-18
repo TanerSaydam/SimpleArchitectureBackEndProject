@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<div class="row mt-4">
+    <div class="col-md-4 offset-4">
+        <form action="/Auth/Register" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Kullanıcı Adı</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Mail Adresi</label>
+                <input type="email" name="email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Şifre</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Kullanıcı Resmi</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            <h2 class="text-danger">@TempData["Hata"]</h2>
+        </form>
+
+    </div>
+</div>
+
+
