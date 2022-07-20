@@ -34,7 +34,7 @@ namespace Business.Authentication
             if (result)
             {
                 Token token = new Token();
-                token = _tokenHandler.CreateToken(user, operationClaims);
+                //token = _tokenHandler.CreateToken(user, operationClaims);
                 return new SuccessDataResult<Token>(token);
             }
             return new ErrorDataResult<Token>("Kullanıcı maili ya da şifre bilgisi yanlış");

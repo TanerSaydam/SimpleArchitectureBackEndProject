@@ -22,6 +22,7 @@ namespace WebUI.Controllers
 
         public IActionResult Privacy()
         {
+            string name = User.Identity.Name;
             return View();
         }
 
