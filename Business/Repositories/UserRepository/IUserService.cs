@@ -8,7 +8,11 @@ namespace Business.Repositories.UserRepository
     {
         Task Add(RegisterAuthDto authDto);
         Task<IResult> Update(User user);
+        Task<IResult> ConfirmUser(string confirmValue);
+        Task<IResult> SendConfirmUserMail(string email);
+        Task<IResult> SendForgotPasswordMail(string email);
         Task<IResult> ChangePassword(UserChangePasswordDto userChangePasswordDto);
+        Task<IResult> CreateANewPassword(CreateANewPasswordDto createANewPasswordDto);
         Task<IResult> Delete(User user);
         Task<IDataResult<List<User>>> GetList();
         Task<User> GetByEmail(string email);

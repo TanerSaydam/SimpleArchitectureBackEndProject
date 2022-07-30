@@ -9,5 +9,6 @@ namespace Core.DataAccess
         Task Delete(T entity);
         Task<List<T>> GetAll(Expression<Func<T, bool>> filter = null);
         Task<T> Get(Expression<Func<T, bool>> filter);
+        Task<T> GetFirst();
     }
 }

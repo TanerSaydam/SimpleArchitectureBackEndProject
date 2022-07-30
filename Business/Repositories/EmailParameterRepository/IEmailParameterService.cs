@@ -10,6 +10,7 @@ namespace Business.Repositories.EmailParameterRepository
         Task<IResult> Delete(EmailParameter emailParameter);
         Task<IDataResult<List<EmailParameter>>> GetList();
         Task<IDataResult<EmailParameter>> GetById(int id);
+        Task<EmailParameter> GetFirst();
         Task<IResult> SendEmail(EmailParameter emailParameter, string body, string subject, string emails);
     }
 }

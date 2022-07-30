@@ -8,19 +8,22 @@ namespace Core.Aspects.Transaction
     {
         public override void Intercept(IInvocation invocation)
         {
-            using (TransactionScope transaction = new TransactionScope())
-            {
-                try
-                {
-                    invocation.Proceed();
-                    transaction.Complete();
-                }
-                catch (Exception)
-                {
-                    transaction.Dispose();
-                    throw;
-                }
-            }
+            //async metotlarda bu aspect çalışmıyor. 
+            invocation.Proceed();
+
+            //using (TransactionScope transaction = new TransactionScope())
+            //{
+            //    try
+            //    {
+            //        invocation.Proceed();
+            //        transaction.Complete();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        transaction.Dispose();
+            //        throw;
+            //    }
+            //}
         }
     }
 }

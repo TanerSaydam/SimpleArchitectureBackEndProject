@@ -61,6 +61,50 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("[action]/{email}")]
+        public async Task<IActionResult> SendConfirmUserMail(string email)
+        {
+            var result = await _userService.SendConfirmUserMail(email);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("[action]/{email}")]
+        public async Task<IActionResult> SendForgotPasswordMail(string email)
+        {
+            var result = await _userService.SendForgotPasswordMail(email);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("[action]/{confirmValue}")]
+        public async Task<IActionResult> ConfirmUser(string confirmValue)
+        {
+            var result = await _userService.ConfirmUser(confirmValue);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateANewPassword(CreateANewPasswordDto createANewPasswordDto)
+        {
+            var result = await _userService.CreateANewPassword(createANewPasswordDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> ChangePassword(UserChangePasswordDto userChangePasswordDto)
         {

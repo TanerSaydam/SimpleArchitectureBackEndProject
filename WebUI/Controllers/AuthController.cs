@@ -49,7 +49,6 @@ namespace WebUI.Controllers
             return RedirectToAction("Register", "Auth");
         }
 
-        [HttpPost()]
         public async Task<IActionResult> Login(LoginAuthDto authDto)
         {
             var result = await _authService.Login(authDto);

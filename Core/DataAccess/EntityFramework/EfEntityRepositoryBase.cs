@@ -35,6 +35,14 @@ namespace Core.DataAccess.EntityFramework
             }
         }
 
+        public async Task<TEntity> GetFirst()
+        {
+            using (var context = new TContext())
+            {
+                return await context.Set<TEntity>().FirstOrDefaultAsync();
+            }
+        }
+
         public async Task<List<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
             using (var context = new TContext())

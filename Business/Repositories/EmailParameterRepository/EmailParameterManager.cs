@@ -44,6 +44,11 @@ namespace Business.Repositories.EmailParameterRepository
             return new SuccessDataResult<EmailParameter>(await _emailParameterDal.Get(p => p.Id == id));
         }
 
+        public async Task<EmailParameter> GetFirst()
+        {
+            return await _emailParameterDal.GetFirst();
+        }
+
         [CacheAspect()]
         public async Task<IDataResult<List<EmailParameter>>> GetList()
         {
